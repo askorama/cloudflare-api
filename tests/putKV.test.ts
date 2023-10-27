@@ -9,6 +9,7 @@ const API_KEY = 'a-fake-api-key'
 const ACCOUNT_ID = '123'
 const NAMESPACE_ID = '456'
 const KEY = '789'
+const VALUE = 'value'
 
 await t.test('uploadKv', async (t) => {
   await t.test('should upload kv', async (t) => {
@@ -17,10 +18,12 @@ await t.test('uploadKv', async (t) => {
 
     const api = new CloudFlareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
 
-    await api.uploadKv(ACCOUNT_ID, NAMESPACE_ID, KEY, 'value')
+    await api.uploadKv(ACCOUNT_ID, NAMESPACE_ID, KEY, VALUE)
 
     const invocations = fakeServer.getInvocations()
     assert.equal(invocations.length, 1)
+
+    assert.deepStrictEqual(invocations[0].requestBody, { value: VALUE, metadata: '{}' })
   })
 
   await t.test('should throw an error on success: false', async (t) => {
@@ -75,12 +78,19 @@ declare module 'fastify' {
 }
 
 async function buildFakeCloudFlareServer (t: any, apiKey: string): Promise<Fastify.FastifyInstance> {
-  const server = Fastify()
-  await server.register(fMultipart)
+  const server = Fastify({
+    logger: {
+      level: 'trace'
+    }
+  })
+  await server.register(fMultipart, { attachFieldsToBody: true })
 
   const expectedInvocations: Array<{ method: string, url: string, statusCode: number, responseBody: any }> = []
 
-  const invocations: Array<{ headers: any, requestBody: any }> = []
+  const invocations: Array<{
+    headers: any
+    requestBody: any
+  }> = []
 
   server.addHook('onRequest', async (request, reply) => {
     if (request.headers.authorization !== `Bearer ${apiKey}`) {
@@ -109,9 +119,17 @@ async function buildFakeCloudFlareServer (t: any, apiKey: string): Promise<Fasti
       t.diagnostic(`url should be ${expectedInvocation.url}: got ${url}`)
     }
 
+    let requestBody = request.body
+    if (request.isMultipart()) {
+      const body = request.body as any
+      requestBody = Object.fromEntries(
+        Object.keys(body).map((key) => [key, body[key].value])
+      )
+    }
+
     invocations.push({
       headers: request.headers,
-      requestBody: request.body
+      requestBody
     })
 
     await reply.status(expectedInvocation.statusCode).send(expectedInvocation.responseBody)
