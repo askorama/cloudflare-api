@@ -1,0 +1,28 @@
+{
+  "name": "cloudflare-api",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "lint": "ts-standard",
+    "test": "node --loader tsx tests/putKV.test.ts",
+    "emit-types": "tsc --declaration --emitDeclarationOnly",
+    "build": "tsc && npm run emit-types"
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "keywords": [],
+  "author": "",
+  "devDependencies": {
+    "@fastify/multipart": "^7.7.3",
+    "@types/flush-write-stream": "^1.0.0",
+    "@types/node": "^20.8.9",
+    "fastify": "^4.23.2",
+    "ts-standard": "^12.0.2",
+    "tsx": "^3.13.0",
+    "typescript": "^5.1.6"
+  }
+}
