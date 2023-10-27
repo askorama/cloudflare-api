@@ -10,9 +10,10 @@ const ACCOUNT_ID = '123'
 const NAMESPACE_ID = '456'
 const KEY = '789'
 const VALUE = 'value'
+const VALUE_BLOB = Buffer.from([1, 2, 3]);
 
 await t.test('uploadKv', async (t) => {
-  await t.test('should upload kv', async (t) => {
+  await t.test('should upload string kv', async (t) => {
     const fakeServer = await buildFakeCloudFlareServer(t, API_KEY)
     fakeServer.expectInvocation('PUT', `/accounts/${ACCOUNT_ID}/storage/kv/namespaces/${NAMESPACE_ID}/values/${KEY}`, 200, { success: true })
 
@@ -24,6 +25,20 @@ await t.test('uploadKv', async (t) => {
     assert.equal(invocations.length, 1)
 
     assert.deepStrictEqual(invocations[0].requestBody, { value: VALUE, metadata: '{}' })
+  })
+
+  await t.test('should upload blob kv', async (t) => {
+    const fakeServer = await buildFakeCloudFlareServer(t, API_KEY)
+    fakeServer.expectInvocation('PUT', `/accounts/${ACCOUNT_ID}/storage/kv/namespaces/${NAMESPACE_ID}/values/${KEY}`, 200, { success: true })
+
+    const api = new CloudFlareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
+
+    await api.uploadKv(ACCOUNT_ID, NAMESPACE_ID, KEY, VALUE_BLOB)
+
+    const invocations = fakeServer.getInvocations()
+    assert.equal(invocations.length, 1)
+
+    assert.deepStrictEqual(invocations[0].requestBody, { value: '\x01\x02\x03', metadata: '{}' })
   })
 
   await t.test('should throw an error on success: false', async (t) => {
