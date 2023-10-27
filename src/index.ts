@@ -1,6 +1,5 @@
 
 function createError (message: string, cause?: Error): Error {
-  // @ts-expect-error
   return new Error(message, {
     cause
   })

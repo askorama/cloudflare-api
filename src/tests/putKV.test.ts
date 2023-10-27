@@ -3,14 +3,14 @@ import assert from 'node:assert'
 import Fastify from 'fastify'
 import fMultipart from '@fastify/multipart'
 
-import { CloudFlareApi } from '../src/index'
+import { CloudFlareApi } from '../index.js'
 
 const API_KEY = 'a-fake-api-key'
 const ACCOUNT_ID = '123'
 const NAMESPACE_ID = '456'
 const KEY = '789'
 const VALUE = 'value'
-const VALUE_BLOB = Buffer.from([1, 2, 3]);
+const VALUE_BLOB = new Blob([Buffer.from([1, 2, 3])])
 
 await t.test('uploadKv', async (t) => {
   await t.test('should upload string kv', async (t) => {
@@ -98,7 +98,7 @@ async function buildFakeCloudFlareServer (t: any, apiKey: string): Promise<Fasti
       level: 'trace'
     }
   })
-  await server.register(fMultipart, { attachFieldsToBody: true })
+  await server.register(fMultipart, { attachFieldsToBody: 'keyValues' })
 
   const expectedInvocations: Array<{ method: string, url: string, statusCode: number, responseBody: any }> = []
 
@@ -134,17 +134,9 @@ async function buildFakeCloudFlareServer (t: any, apiKey: string): Promise<Fasti
       t.diagnostic(`url should be ${expectedInvocation.url}: got ${url}`)
     }
 
-    let requestBody = request.body
-    if (request.isMultipart()) {
-      const body = request.body as any
-      requestBody = Object.fromEntries(
-        Object.keys(body).map((key) => [key, body[key].value])
-      )
-    }
-
     invocations.push({
       headers: request.headers,
-      requestBody
+      requestBody: request.body
     })
 
     await reply.status(expectedInvocation.statusCode).send(expectedInvocation.responseBody)

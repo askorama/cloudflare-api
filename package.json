@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "scripts": {
     "lint": "ts-standard",
-    "test": "node --loader tsx tests/putKV.test.ts",
+    "test": "node --loader tsx src/tests/putKV.test.ts",
     "emit-types": "tsc --declaration --emitDeclarationOnly",
     "build": "tsc && npm run emit-types"
   },
@@ -18,7 +18,6 @@
   "author": "",
   "devDependencies": {
     "@fastify/multipart": "^7.7.3",
-    "@types/flush-write-stream": "^1.0.0",
     "@types/node": "^20.8.9",
     "fastify": "^4.23.2",
     "ts-standard": "^12.0.2",
