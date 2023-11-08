@@ -1,9 +1,10 @@
 {
   "name": "@orama/cloudflare-api",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "type": "module",
   "main": "dist/index.js",
+  "license": "Apache-2.0",
   "scripts": {
     "build": "npm run build:cjs && npm run build:esm && npm run rename:cjs",
     "build:cjs": "tsc -p tsconfig.cjs.json",
@@ -16,8 +17,16 @@
   "files": [
     "dist"
   ],
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "cloudflare",
+    "api"
+  ],
+  "author": {
+    "name": "Tommaso Allevi",
+    "email": "tomallevi@gmail.com",
+    "url": "https://github.com/allevo",
+    "author": true
+  },
   "devDependencies": {
     "@fastify/multipart": "^7.7.3",
     "@types/node": "=20.8.0",
