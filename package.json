@@ -1,14 +1,16 @@
 {
-  "name": "cloudflare-api",
+  "name": "@orama/cloudflare-api",
   "version": "1.0.0",
   "description": "",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
+    "build": "npm run build:cjs && npm run build:esm && npm run rename:cjs",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "rename:cjs": "mv ./dist/cjs/index.js ./dist/cjs/index.cjs",
     "lint": "ts-standard",
-    "test": "node --loader tsx src/tests/putKV.test.ts",
-    "emit-types": "tsc --declaration --emitDeclarationOnly",
-    "build": "tsc && npm run emit-types"
+    "test": "node --loader tsx tests/index.test.ts"
   },
   "types": "./dist/index.d.ts",
   "files": [
@@ -18,7 +20,7 @@
   "author": "",
   "devDependencies": {
     "@fastify/multipart": "^7.7.3",
-    "@types/node": "^20.8.9",
+    "@types/node": "=20.8.0",
     "fastify": "^4.23.2",
     "ts-standard": "^12.0.2",
     "tsx": "^3.13.0",
