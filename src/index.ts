@@ -1,14 +1,13 @@
-import { CloudFlareApiConfig } from "./internal_types.js"
-import { CloudFlareWorkerKv } from "./workerKv.js"
+import { CloudFlareApiConfig } from './internal_types.js'
+import { CloudFlareWorkerKv } from './workerKv.js'
 
 export interface CloudFlareApiOption {
   apiKey: string
   url?: string
 }
 
-
 export class CloudFlareApi {
-  private config: CloudFlareApiConfig
+  private readonly config: CloudFlareApiConfig
 
   constructor (option: CloudFlareApiOption) {
     this.config = {
@@ -17,7 +16,7 @@ export class CloudFlareApi {
     }
   }
 
-  workerKv(accountId: string, namespaceId: string): CloudFlareWorkerKv {
+  workerKv (accountId: string, namespaceId: string): CloudFlareWorkerKv {
     return new CloudFlareWorkerKv({
       ...this.config,
       accountId,
