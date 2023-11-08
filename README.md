@@ -1,5 +1,8 @@
 # Cloudflare API library
 
+[![Nodejs](https://github.com/oramasearch/cloudflare-api/actions/workflows/nodejs.yml/badge.svg)](https://github.com/oramasearch/cloudflare-api/actions/workflows/nodejs.yml)
+![npm package minimized gzipped size (select exports)](https://img.shields.io/bundlejs/size/%40orama%2Fcloudflare-api)
+
 This library is a wrapper around the Cloudflare API.
 
 ## Installation
