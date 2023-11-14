@@ -1,8 +1,8 @@
 import t from 'node:test'
 import assert from 'node:assert'
 
-import { CloudFlareApi } from '../src/index.js'
-import { buildFakeCloudFlareServer } from './helper.js'
+import { CloudflareApi } from '../src/index.js'
+import { buildFakeCloudflareServer } from './helper.js'
 
 const API_KEY = 'a-fake-api-key'
 const ACCOUNT_ID = '123'
@@ -11,10 +11,10 @@ const KEY = '789'
 
 await t.test('getKv', async (t) => {
   await t.test('should get kv as json', async (t) => {
-    const fakeServer = await buildFakeCloudFlareServer(t, API_KEY)
+    const fakeServer = await buildFakeCloudflareServer(t, API_KEY)
     fakeServer.expectInvocation('GET', `/accounts/${ACCOUNT_ID}/storage/kv/namespaces/${NAMESPACE_ID}/values/${KEY}`, 200, { foo: 'bar' })
 
-    const api = new CloudFlareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
+    const api = new CloudflareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
     const workerKv = api.workerKv(ACCOUNT_ID, NAMESPACE_ID)
 
     const obj = await workerKv.getKv(KEY, 'json')
@@ -26,10 +26,10 @@ await t.test('getKv', async (t) => {
   })
 
   await t.test('should get kv as json', async (t) => {
-    const fakeServer = await buildFakeCloudFlareServer(t, API_KEY)
+    const fakeServer = await buildFakeCloudflareServer(t, API_KEY)
     fakeServer.expectInvocation('GET', `/accounts/${ACCOUNT_ID}/storage/kv/namespaces/${NAMESPACE_ID}/values/${KEY}`, 200, { foo: 'bar' })
 
-    const api = new CloudFlareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
+    const api = new CloudflareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
     const workerKv = api.workerKv(ACCOUNT_ID, NAMESPACE_ID)
 
     const obj = await workerKv.getKv(KEY, 'text')
@@ -41,10 +41,10 @@ await t.test('getKv', async (t) => {
   })
 
   await t.test('should get kv as arrayBuffer', async (t) => {
-    const fakeServer = await buildFakeCloudFlareServer(t, API_KEY)
+    const fakeServer = await buildFakeCloudflareServer(t, API_KEY)
     fakeServer.expectInvocation('GET', `/accounts/${ACCOUNT_ID}/storage/kv/namespaces/${NAMESPACE_ID}/values/${KEY}`, 200, Buffer.from([1, 2, 3]))
 
-    const api = new CloudFlareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
+    const api = new CloudflareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
     const workerKv = api.workerKv(ACCOUNT_ID, NAMESPACE_ID)
 
     const obj = await workerKv.getKv(KEY, 'arrayBuffer')
@@ -56,10 +56,10 @@ await t.test('getKv', async (t) => {
   })
 
   await t.test('should get kv as blob', async (t) => {
-    const fakeServer = await buildFakeCloudFlareServer(t, API_KEY)
+    const fakeServer = await buildFakeCloudflareServer(t, API_KEY)
     fakeServer.expectInvocation('GET', `/accounts/${ACCOUNT_ID}/storage/kv/namespaces/${NAMESPACE_ID}/values/${KEY}`, 200, Buffer.from([1, 2, 3]))
 
-    const api = new CloudFlareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
+    const api = new CloudflareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
     const workerKv = api.workerKv(ACCOUNT_ID, NAMESPACE_ID)
 
     const obj = await workerKv.getKv(KEY, 'blob')
@@ -73,10 +73,10 @@ await t.test('getKv', async (t) => {
   })
 
   await t.test('should get kv as response', async (t) => {
-    const fakeServer = await buildFakeCloudFlareServer(t, API_KEY)
+    const fakeServer = await buildFakeCloudflareServer(t, API_KEY)
     fakeServer.expectInvocation('GET', `/accounts/${ACCOUNT_ID}/storage/kv/namespaces/${NAMESPACE_ID}/values/${KEY}`, 200, { foo: 'bar' })
 
-    const api = new CloudFlareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
+    const api = new CloudflareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
     const workerKv = api.workerKv(ACCOUNT_ID, NAMESPACE_ID)
 
     const response = await workerKv.getKv(KEY, 'response')
@@ -89,10 +89,10 @@ await t.test('getKv', async (t) => {
 
   /*
   await t.test('should throw an error on success: false', async (t) => {
-    const fakeServer = await buildFakeCloudFlareServer(t, API_KEY)
+    const fakeServer = await buildFakeCloudflareServer(t, API_KEY)
     fakeServer.expectInvocation('DELETE', `/accounts/${ACCOUNT_ID}/storage/kv/namespaces/${NAMESPACE_ID}/values/${KEY}`, 200, { success: false })
 
-    const api = new CloudFlareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
+    const api = new CloudflareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
     const workerKv = api.workerKv(ACCOUNT_ID, NAMESPACE_ID)
 
     await assert.rejects(workerKv.deleteKv(KEY), err => {
@@ -104,10 +104,10 @@ await t.test('getKv', async (t) => {
   })
 
   await t.test('should throw an error on 500', async (t) => {
-    const fakeServer = await buildFakeCloudFlareServer(t, API_KEY)
+    const fakeServer = await buildFakeCloudflareServer(t, API_KEY)
     fakeServer.expectInvocation('DELETE', `/accounts/${ACCOUNT_ID}/storage/kv/namespaces/${NAMESPACE_ID}/values/${KEY}`, 500, {})
 
-    const api = new CloudFlareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
+    const api = new CloudflareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
     const workerKv = api.workerKv(ACCOUNT_ID, NAMESPACE_ID)
 
     await assert.rejects(workerKv.deleteKv(KEY), err => {
@@ -119,10 +119,10 @@ await t.test('getKv', async (t) => {
   })
 
   await t.test('should not break strage error on not JSON', async (t) => {
-    const fakeServer = await buildFakeCloudFlareServer(t, API_KEY)
+    const fakeServer = await buildFakeCloudflareServer(t, API_KEY)
     fakeServer.expectInvocation('DELETE', `/accounts/${ACCOUNT_ID}/storage/kv/namespaces/${NAMESPACE_ID}/values/${KEY}`, 500, '{')
 
-    const api = new CloudFlareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
+    const api = new CloudflareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
     const workerKv = api.workerKv(ACCOUNT_ID, NAMESPACE_ID)
 
     await assert.rejects(workerKv.deleteKv(KEY), err => {

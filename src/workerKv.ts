@@ -1,7 +1,7 @@
-import { CloudFlareApiConfig, Method } from './internal_types.js'
+import { CloudflareApiConfig, Method } from './internal_types.js'
 import { checkSuccess, createError, makeHttpRequest } from './utils.js'
 
-export interface CloudFlareWorkerKvConfig extends CloudFlareApiConfig {
+export interface CloudflareWorkerKvConfig extends CloudflareApiConfig {
   accountId: string
   namespaceId: string
 }
@@ -16,8 +16,8 @@ type ReturnAsType<T> =
             T extends 'response' ? Response :
               never
 
-export class CloudFlareWorkerKv {
-  constructor (private readonly config: CloudFlareWorkerKvConfig) {}
+export class CloudflareWorkerKv {
+  constructor (private readonly config: CloudflareWorkerKvConfig) {}
 
   async getKv<T extends ReturnAs>(key: string, returnAs: T): Promise<ReturnAsType<T>> {
     const response = await this.perform(Method.GET, key, undefined)

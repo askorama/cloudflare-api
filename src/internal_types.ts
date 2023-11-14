@@ -1,5 +1,5 @@
 
-export interface CloudFlareApiConfig {
+export interface CloudflareApiConfig {
   apiKey: string
   url: string
 }

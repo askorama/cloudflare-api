@@ -13,10 +13,10 @@ npm install @orama/cloudflare-api
 ## Usage
 
 ```ts
-import { CloudFlareApi } from '@orama/cloudflare-api';
+import { CloudflareApi } from '@orama/cloudflare-api';
 
 const apiKey = 'your-api-key'
-const api = new CloudFlareApi({ apiKey })
+const api = new CloudflareApi({ apiKey })
 
 // Worker KV
 const ACCOUNT_ID = 'your-account-id'

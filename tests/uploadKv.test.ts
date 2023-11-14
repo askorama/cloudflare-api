@@ -1,8 +1,8 @@
 import t from 'node:test'
 import assert from 'node:assert'
 
-import { CloudFlareApi } from '../src/index.js'
-import { buildFakeCloudFlareServer } from './helper.js'
+import { CloudflareApi } from '../src/index.js'
+import { buildFakeCloudflareServer } from './helper.js'
 
 const API_KEY = 'a-fake-api-key'
 const ACCOUNT_ID = '123'
@@ -13,10 +13,10 @@ const VALUE_BLOB = new Blob([Buffer.from([1, 2, 3])])
 
 await t.test('uploadKv', async (t) => {
   await t.test('should upload string kv', async (t) => {
-    const fakeServer = await buildFakeCloudFlareServer(t, API_KEY)
+    const fakeServer = await buildFakeCloudflareServer(t, API_KEY)
     fakeServer.expectInvocation('PUT', `/accounts/${ACCOUNT_ID}/storage/kv/namespaces/${NAMESPACE_ID}/values/${KEY}`, 200, { success: true })
 
-    const api = new CloudFlareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
+    const api = new CloudflareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
     const workerKv = api.workerKv(ACCOUNT_ID, NAMESPACE_ID)
 
     await workerKv.uploadKv(KEY, VALUE)
@@ -28,10 +28,10 @@ await t.test('uploadKv', async (t) => {
   })
 
   await t.test('should upload blob kv', async (t) => {
-    const fakeServer = await buildFakeCloudFlareServer(t, API_KEY)
+    const fakeServer = await buildFakeCloudflareServer(t, API_KEY)
     fakeServer.expectInvocation('PUT', `/accounts/${ACCOUNT_ID}/storage/kv/namespaces/${NAMESPACE_ID}/values/${KEY}`, 200, { success: true })
 
-    const api = new CloudFlareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
+    const api = new CloudflareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
     const workerKv = api.workerKv(ACCOUNT_ID, NAMESPACE_ID)
 
     await workerKv.uploadKv(KEY, VALUE_BLOB)
@@ -43,10 +43,10 @@ await t.test('uploadKv', async (t) => {
   })
 
   await t.test('should throw an error on success: false', async (t) => {
-    const fakeServer = await buildFakeCloudFlareServer(t, API_KEY)
+    const fakeServer = await buildFakeCloudflareServer(t, API_KEY)
     fakeServer.expectInvocation('PUT', `/accounts/${ACCOUNT_ID}/storage/kv/namespaces/${NAMESPACE_ID}/values/${KEY}`, 200, { success: false })
 
-    const api = new CloudFlareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
+    const api = new CloudflareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
     const workerKv = api.workerKv(ACCOUNT_ID, NAMESPACE_ID)
 
     await assert.rejects(workerKv.uploadKv(KEY, 'value'), err => {
@@ -58,10 +58,10 @@ await t.test('uploadKv', async (t) => {
   })
 
   await t.test('should throw an error on 500', async (t) => {
-    const fakeServer = await buildFakeCloudFlareServer(t, API_KEY)
+    const fakeServer = await buildFakeCloudflareServer(t, API_KEY)
     fakeServer.expectInvocation('PUT', `/accounts/${ACCOUNT_ID}/storage/kv/namespaces/${NAMESPACE_ID}/values/${KEY}`, 500, {})
 
-    const api = new CloudFlareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
+    const api = new CloudflareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
     const workerKv = api.workerKv(ACCOUNT_ID, NAMESPACE_ID)
 
     await assert.rejects(workerKv.uploadKv(KEY, 'value'), err => {
@@ -73,10 +73,10 @@ await t.test('uploadKv', async (t) => {
   })
 
   await t.test('should not break strage error on not JSON', async (t) => {
-    const fakeServer = await buildFakeCloudFlareServer(t, API_KEY)
+    const fakeServer = await buildFakeCloudflareServer(t, API_KEY)
     fakeServer.expectInvocation('PUT', `/accounts/${ACCOUNT_ID}/storage/kv/namespaces/${NAMESPACE_ID}/values/${KEY}`, 500, '{')
 
-    const api = new CloudFlareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
+    const api = new CloudflareApi({ apiKey: API_KEY, url: fakeServer.getBaseUrl() })
     const workerKv = api.workerKv(ACCOUNT_ID, NAMESPACE_ID)
 
     await assert.rejects(workerKv.uploadKv(KEY, 'value'), err => {
