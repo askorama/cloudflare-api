@@ -10,7 +10,7 @@ declare module 'fastify' {
   }
 }
 
-export async function buildFakeCloudFlareServer (t: any, apiKey: string): Promise<Fastify.FastifyInstance> {
+export async function buildFakeCloudflareServer (t: any, apiKey: string): Promise<Fastify.FastifyInstance> {
   const server = Fastify({
     logger: {
       level: 'error'
