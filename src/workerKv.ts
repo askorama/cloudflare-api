@@ -38,10 +38,17 @@ export class CloudflareWorkerKv {
     }
   }
 
-  async uploadKv (key: string, value: string | Blob): Promise<void> {
+  async uploadKv (key: string, value: string | Blob, ttl?: number): Promise<void> {
     const formdata = new FormData()
     formdata.append('value', value)
     formdata.append('metadata', '{}')
+
+    if (ttl !== undefined) {
+      if (ttl < 60) {
+        throw new Error('minimum ttl is 60 seconds')
+      }
+      formdata.append('expiration', ttl.toString())
+    }
 
     const response = await this.perform(Method.PUT, key, formdata)
     const json = await response.json()
@@ -59,7 +66,7 @@ export class CloudflareWorkerKv {
     const headers = new Headers()
     headers.append('Authorization', `Bearer ${this.config.apiKey}`)
 
-    let response
+    let response: Response
     try {
       response = await makeHttpRequest(method, url, headers, body)
     } catch (e) {
